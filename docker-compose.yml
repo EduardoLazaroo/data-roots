@@ -6,3 +6,15 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/src:/app/src
+      - ./backend/credentials.json:/app/credentials.json
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+
+  frontend:
+    build: ./frontend
+    container_name: raizes-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules

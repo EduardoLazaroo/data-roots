@@ -1,2 +1,4 @@
 # Google Cloud
 backend/credentials.json
+
+backend/src/routes/__pycache__/
