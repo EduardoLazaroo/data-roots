@@ -2,3 +2,6 @@
 backend/credentials.json
 
 backend/src/routes/__pycache__/
+backend/src/__pycache__/
+*.log
+*.pyc
