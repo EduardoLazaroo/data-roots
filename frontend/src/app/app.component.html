@@ -1,27 +1,25 @@
 <div class="container">
-  <h1>{{ title }}</h1>
+  <h1>Dashboard PAM - Top Produtos</h1>
 
-  <button (click)="buscarDados()">Recarregar Dados</button>
+  <div class="filters">
+    <label>
+      Ano:
+      <select [(ngModel)]="anoSelecionado" (change)="onFiltroChange()">
+        <option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</option>
+      </select>
+    </label>
 
-  <div *ngIf="carregando">Carregando...</div>
-  <div *ngIf="erro">{{ erro }}</div>
+    <label>
+      UF:
+      <select [(ngModel)]="ufSelecionado" (change)="onFiltroChange()">
+        <option *ngFor="let uf of ufsDisponiveis" [value]="uf">{{ uf }}</option>
+      </select>
+    </label>
+  </div>
 
-  <table *ngIf="dados.length > 0" border="1" cellpadding="6">
-    <thead>
-      <tr>
-        <th>Ano</th>
-        <th>UF</th>
-        <th>Município</th>
-        <th>Produto</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let d of dados">
-        <td>{{ d.ano }}</td>
-        <td>{{ d.sigla_uf }}</td>
-        <td>{{ d.id_municipio }}</td>
-        <td>{{ d.produto }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="loading" class="loading">Carregando dados...</div>
+
+  <div *ngIf="!loading">
+    <div echarts [options]="topProdutosOptions" class="chart"></div>
+  </div>
 </div>
