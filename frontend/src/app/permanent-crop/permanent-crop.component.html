@@ -1,0 +1,80 @@
+<div class="dashboard-container">
+  <h1>Dashboard Lavoura Permanente</h1>
+
+  <div class="filters-container">
+    <div class="filter-card">
+      <label for="uf">UF</label>
+      <div *ngIf="loadingUFs" class="loading">Carregando...</div>
+      <select
+        id="uf"
+        [(ngModel)]="selectedUF"
+        (change)="onUFChange()"
+        [disabled]="loadingUFs"
+      >
+        <option value="" disabled selected>-- Escolha uma UF --</option>
+        <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
+          {{ uf.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-card">
+      <label for="municipio">Município</label>
+      <div *ngIf="loadingMunicipios" class="loading">Carregando...</div>
+      <select
+        id="municipio"
+        [(ngModel)]="selectedMunicipio"
+        [disabled]="!selectedUF || loadingMunicipios"
+      >
+        <option value="" disabled selected>-- Escolha um município --</option>
+        <option *ngFor="let m of municipios" [value]="m.id_municipio">
+          {{ m.municipio }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-card">
+      <label for="ano">Ano</label>
+      <input
+        id="ano"
+        type="number"
+        [(ngModel)]="selectedAno"
+        placeholder="Ex: 2020"
+      />
+      <button
+        class="btn"
+        (click)="fetchProdutos()"
+        [disabled]="!selectedUF || !selectedMunicipio || !selectedAno"
+      >
+        Buscar
+      </button>
+    </div>
+  </div>
+
+  <div class="products-container" *ngIf="!loadingProdutos && produtos.length">
+    <div class="card">
+      <h2>Produtos encontrados</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Área Colhida (ha)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of produtos">
+            <td>{{ p.produto }}</td>
+            <td>{{ p.area_colhida | number : "1.0-2" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" *ngIf="produtos.length">
+      <h2>Gráfico de Área Colhida por Produto</h2>
+      <div echarts [options]="chartOptions" class="chart"></div>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loadingProdutos">Carregando produtos...</div>
+</div>
