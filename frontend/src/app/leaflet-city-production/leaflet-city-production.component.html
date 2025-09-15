@@ -1,0 +1,67 @@
+<div class="dashboard-container">
+  <h1>Produção por Município</h1>
+
+  <div class="filters-container">
+    <!-- UF -->
+    <div class="filter-card">
+      <label for="uf">UF</label>
+      <div *ngIf="loadingUFs" class="loading">Carregando...</div>
+      <select id="uf" [(ngModel)]="selectedUF" [disabled]="loadingUFs">
+        <option value="" disabled selected>-- Escolha uma UF --</option>
+        <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
+          {{ uf.nome }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Ano + Botão -->
+    <div class="filter-card year-search">
+      <label for="ano">Ano</label>
+      <div class="year-input-button">
+        <input
+          id="ano"
+          type="number"
+          [(ngModel)]="selectedAno"
+          placeholder="Ex: 2023"
+          min="1974"
+          max="2023"
+        />
+        <button (click)="buscarProdutos()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa -->
+  <div id="map" class="map-container"></div>
+
+  <!-- Produtos em tabela -->
+  <div class="products-container" *ngIf="produtos.length">
+    <h3>Selecione um Produto</h3>
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let p of produtos">
+        <div class="product-info">
+          <strong>{{ p.produto }}</strong
+          ><br />
+          Área colhida: {{ p.area_colhida_total | number : "1.0-0" }} ha
+        </div>
+        <button (click)="selectProduto(p.produto)">Selecionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nenhum produto encontrado -->
+  <div
+    *ngIf="!loadingProdutos && !produtos.length && selectedUF && selectedAno"
+    class="no-data"
+  >
+    Nenhum produto encontrado para a UF {{ selectedUF }} em {{ selectedAno }}.
+  </div>
+
+  <!-- Nenhum município encontrado -->
+  <div
+    *ngIf="selectedProduto && !municipios.length && !loadingProdutos"
+    class="no-data"
+  >
+    Nenhum município encontrado para o produto "{{ selectedProduto }}".
+  </div>
+</div>

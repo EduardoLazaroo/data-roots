@@ -8,16 +8,22 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { HomeComponent } from './home/home.component';
 import { PermanentCropComponent } from './permanent-crop/permanent-crop.component';
+import { LeafletCityProductionComponent } from './leaflet-city-production/leaflet-city-production.component';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, PermanentCropComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    PermanentCropComponent,
+    LeafletCityProductionComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxEchartsModule.forRoot({ echarts }),
+    NgxEchartsModule.forRoot({ echarts })
   ],
   providers: [],
   bootstrap: [AppComponent],

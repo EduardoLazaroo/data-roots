@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.dashboard import router as dashboard_router 
+from routes.dashboard_route import router as dashboard_router
+from routes.leaflet_route import router as leaflet_router
 
 app = FastAPI(title="API PAM IBGE")
 
@@ -12,4 +13,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(dashboard_router) 
+app.include_router(dashboard_router)
+app.include_router(leaflet_router)
