@@ -24,10 +24,9 @@ export class LeafletService {
     let params = new HttpParams()
       .set('uf', uf)
       .set('ano', ano.toString())
-      .set('produto', produto)
+      .set('produto', encodeURIComponent(produto)) // força encode seguro
       .set('limit', limit.toString());
-    return this.http.get<MunicipioProduzido[]>(`${this.API_URL}municipios`, {
-      params,
-    });
+
+    return this.http.get<MunicipioProduzido[]>(`${this.API_URL}municipios`, { params });
   }
 }

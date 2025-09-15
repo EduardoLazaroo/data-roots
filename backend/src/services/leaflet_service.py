@@ -1,4 +1,5 @@
 from google.cloud import bigquery
+from urllib.parse import unquote
 
 client = bigquery.Client()
 
@@ -31,9 +32,10 @@ def get_produtos_por_uf_ano(uf: str, ano: int):
     return df.to_dict(orient="records")
 
 def get_municipios_com_quantidade(uf: str, ano: int, produto: str, limit: int = 10):
+    produto = unquote(produto)
     limit = max(1, min(limit, 100))  # limite seguro
 
-    query = f"""
+    query = """
         SELECT
             m.id_municipio,
             m.nome AS municipio,
@@ -52,14 +54,15 @@ def get_municipios_com_quantidade(uf: str, ano: int, produto: str, limit: int = 
           AND p.produto = @produto
         GROUP BY m.id_municipio, m.nome
         ORDER BY quantidade_produzida DESC
-        LIMIT {limit}
+        LIMIT @limit
     """
 
     job_config = bigquery.QueryJobConfig(
         query_parameters=[
             bigquery.ScalarQueryParameter("uf", "STRING", uf),
             bigquery.ScalarQueryParameter("ano", "INT64", ano),
-            bigquery.ScalarQueryParameter("produto", "STRING", produto)
+            bigquery.ScalarQueryParameter("produto", "STRING", produto),
+            bigquery.ScalarQueryParameter("limit", "INT64", limit),
         ]
     )
 
