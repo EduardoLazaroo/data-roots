@@ -1,0 +1,86 @@
+<div class="comparing-container">
+  <h1>Comparação entre UFs</h1>
+
+  <!-- Ano -->
+  <div class="filter-card">
+    <label for="ano">Ano</label>
+    <input
+      id="ano"
+      type="number"
+      [(ngModel)]="selectedAno"
+      placeholder="Ex: 2020"
+      min="1974"
+      max="2023"
+    />
+    <button class="btn" (click)="fetchProducts()" [disabled]="!selectedAno">Buscar Produtos</button>
+  </div>
+
+  <!-- Lista de produtos -->
+  <div *ngIf="produtos.length && !loadingProdutos" class="products-section">
+    <h2>Produtos disponíveis em {{ selectedAno }}</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>UFs que produziram</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of produtos">
+          <td>{{ p.produto }}</td>
+          <td>{{ p.ufs.join(', ') }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Escolha do produto e UFs -->
+    <div class="filter-card">
+      <label for="produto">Produto</label>
+      <select id="produto" [(ngModel)]="selectedProduto">
+        <option value="" disabled selected>-- Escolha um produto --</option>
+        <option *ngFor="let p of produtos" [value]="p.produto">{{ p.produto }}</option>
+      </select>
+    </div>
+
+    <div class="filter-card">
+      <label for="uf1">Primeira UF</label>
+      <input id="uf1" [(ngModel)]="selectedUF1" placeholder="Ex: SP" />
+    </div>
+
+    <div class="filter-card">
+      <label for="uf2">Segunda UF</label>
+      <input id="uf2" [(ngModel)]="selectedUF2" placeholder="Ex: MG" />
+    </div>
+
+    <button
+      class="btn"
+      (click)="compare()"
+      [disabled]="!selectedUF1 || !selectedUF2 || !selectedProduto"
+    >
+      Comparar
+    </button>
+  </div>
+
+  <!-- Resultado da comparação -->
+  <div class="comparison-result" *ngIf="comparison.length && !loadingCompare">
+    <h2>Resultado da Comparação</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>UF</th>
+          <th>Total Produção</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of comparison">
+          <td>{{ c.sigla_uf }}</td>
+          <td>{{ c.total_producao | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Loadings -->
+  <div class="loading" *ngIf="loadingProdutos">Carregando produtos...</div>
+  <div class="loading" *ngIf="loadingCompare">Comparando...</div>
+</div>

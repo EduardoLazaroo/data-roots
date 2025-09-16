@@ -11,12 +11,14 @@ import { PermanentCropComponent } from './permanent-crop/permanent-crop.componen
 import { LeafletCityProductionComponent } from './leaflet-city-production/leaflet-city-production.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UfNamePipe } from './shared/uf-name.pipe';
+import { ComparingStatesComponent } from './comparing-states/comparing-states.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PermanentCropComponent,
+    ComparingStatesComponent,
     LeafletCityProductionComponent,
     UfNamePipe
   ],
