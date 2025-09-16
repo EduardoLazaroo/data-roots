@@ -13,7 +13,7 @@
       >
         <option value="" disabled selected>-- Escolha uma UF --</option>
         <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
-          {{ uf.nome }}
+          {{ uf.sigla_uf | ufName }}
         </option>
       </select>
     </div>
@@ -72,7 +72,7 @@
       </table>
     </div>
 
-    <div class="card" *ngIf="produtos.length">
+    <div class="card">
       <h2>Gráfico de Área Colhida por Produto</h2>
       <div echarts [options]="chartOptions" class="chart"></div>
     </div>

@@ -10,13 +10,15 @@ import { HomeComponent } from './home/home.component';
 import { PermanentCropComponent } from './permanent-crop/permanent-crop.component';
 import { LeafletCityProductionComponent } from './leaflet-city-production/leaflet-city-production.component';
 import { AppRoutingModule } from './app-routing.module';
+import { UfNamePipe } from './shared/uf-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PermanentCropComponent,
-    LeafletCityProductionComponent
+    LeafletCityProductionComponent,
+    UfNamePipe
   ],
   imports: [
     BrowserModule,

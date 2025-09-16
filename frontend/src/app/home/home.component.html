@@ -1,6 +1,27 @@
+<!-- home.component.html -->
 <div class="home-container">
-  <h1>Bem-vindo ao Dashboard</h1>
-  <p>Para acessar os dados de Lavoura Permanente, clique no botão abaixo:</p>
-  <button routerLink="/permanent-crop" class="btn">Ir para Dashboard</button>
-  <button routerLink="/leaflet-city-production" class="btn">Ir para Produção por Município</button>
+  <header>
+    <h1>DATA ROOTS</h1>
+    <p>Visualize e explore dados do agronegócio de forma interativa e clara.</p>
+  </header>
+
+  <main>
+    <div class="home-cards">
+      <div class="card">
+        <h2>Lavoura Permanente</h2>
+        <p>Acesse dados detalhados e gráficos sobre culturas permanentes.</p>
+        <button routerLink="/permanent-crop" class="btn">Ir para Dashboard</button>
+      </div>
+
+      <div class="card">
+        <h2>Produção por Município</h2>
+        <p>Visualize a produção anual de diferentes municípios em mapa interativo.</p>
+        <button routerLink="/leaflet-city-production" class="btn">Ir para Produção</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DATA ROOTS - Plataforma de visualização de dados do agronegócio</p>
+  </footer>
 </div>

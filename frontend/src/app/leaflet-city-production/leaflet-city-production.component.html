@@ -2,19 +2,17 @@
   <h1>Produção por Município</h1>
 
   <div class="filters-container">
-    <!-- UF -->
     <div class="filter-card">
       <label for="uf">UF</label>
       <div *ngIf="loadingUFs" class="loading">Carregando...</div>
       <select id="uf" [(ngModel)]="selectedUF" [disabled]="loadingUFs">
         <option value="" disabled selected>-- Escolha uma UF --</option>
         <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
-          {{ uf.nome }}
+          {{ uf.sigla_uf | ufName }}
         </option>
       </select>
     </div>
 
-    <!-- Ano + Botão -->
     <div class="filter-card year-search">
       <label for="ano">Ano</label>
       <div class="year-input-button">
@@ -22,7 +20,8 @@
           id="ano"
           type="number"
           [(ngModel)]="selectedAno"
-          placeholder="Ex: 2023"
+          placeholder="Ex: 1988"
+          value="2023"
           min="1974"
           max="2023"
         />
@@ -31,12 +30,10 @@
     </div>
   </div>
 
-  <!-- Mapa -->
   <div id="map" class="map-container"></div>
 
-  <!-- Produtos em tabela -->
   <div class="products-container" *ngIf="produtos.length">
-    <h3>Selecione um Produto</h3>
+    <h2>Selecione um Produto</h2>
     <div class="products-grid">
       <div class="product-card" *ngFor="let p of produtos">
         <div class="product-info">
@@ -49,15 +46,12 @@
     </div>
   </div>
 
-  <!-- Nenhum produto encontrado -->
   <div
     *ngIf="!loadingProdutos && !produtos.length && selectedUF && selectedAno"
     class="no-data"
   >
     Nenhum produto encontrado para a UF {{ selectedUF }} em {{ selectedAno }}.
   </div>
-
-  <!-- Nenhum município encontrado -->
   <div
     *ngIf="selectedProduto && !municipios.length && !loadingProdutos"
     class="no-data"

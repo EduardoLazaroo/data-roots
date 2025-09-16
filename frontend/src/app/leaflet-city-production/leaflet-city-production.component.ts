@@ -14,8 +14,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
 
   selectedUF: string = '';
   selectedProduto: string = '';
-  selectedAno: number | null = new Date().getFullYear();
-
+  selectedAno: number | null = null;
   loadingUFs = true;
   loadingProdutos = false;
 

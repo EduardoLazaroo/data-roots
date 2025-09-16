@@ -3,17 +3,17 @@
   margin: 40px auto;
   padding: 0 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: #2c3e50;
 }
 
 h1 {
   text-align: center;
-  color: #2c3e50;
+  color: #1b5e20;
   margin-bottom: 30px;
 }
 
 h2 {
-  color: #34495e;
+  color: #2e7d32;
   margin-bottom: 15px;
 }
 
@@ -26,10 +26,10 @@ h2 {
 
 .filter-card,
 .card {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.2s ease-in-out;
 }
 
@@ -57,14 +57,14 @@ input[type="number"] {
 
 select:focus,
 input[type="number"]:focus {
-  border-color: #3498db;
+  border-color: #43a047;
   outline: none;
 }
 
 .btn {
   padding: 10px 20px;
-  background-color: #3498db;
-  color: #fff;
+  background-color: #43a047;
+  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -73,7 +73,7 @@ input[type="number"]:focus {
 }
 
 .btn:hover:not(:disabled) {
-  background-color: #2980b9;
+  background-color: #2e7d32;
 }
 
 button:disabled {
@@ -81,6 +81,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* Tabela de produtos */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -92,4 +93,20 @@ button:disabled {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+}
+
+.no-data {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ffecec;
+  border: 1px solid #ffcccc;
+  border-radius: 6px;
+  color: #cc0000;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .filters-container {
+    grid-template-columns: 1fr;
+  }
 }
