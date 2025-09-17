@@ -1,32 +1,53 @@
 <!-- home.component.html -->
 <div class="home-container">
   <header>
-    <h1>DATA ROOTS</h1>
-    <p>Visualize e explore dados do agronegócio de forma interativa e clara.</p>
+    <img src="assets/logo-hor.png" alt="DATA ROOTS Logo" class="logo" />
   </header>
 
+  <div class="go-back">
+    <a routerLink="/"><button class="btn">Go Back</button></a>
+  </div>
+
   <main>
+    <div>
+      <h2 class="intro">
+        Visualize e explore dados do agronegócio de forma interativa e clara.
+      </h2>
+    </div>
     <div class="home-cards">
       <div class="card">
-        <h2>Lavoura Permanente</h2>
-        <p>Acesse dados detalhados e gráficos sobre culturas permanentes.</p>
-        <button routerLink="/permanent-crop" class="btn">Ir para Dashboard</button>
+        <h2>Comparação entre Estados</h2>
+        <p>Compare dados de produção entre diferentes estados.</p>
+        <button routerLink="/comparing-states" class="btn">
+          Ir para Comparação
+        </button>
       </div>
 
       <div class="card">
         <h2>Produção por Município</h2>
-        <p>Visualize a produção anual de diferentes municípios em mapa interativo.</p>
-        <button routerLink="/leaflet-city-production" class="btn">Ir para Produção</button>
+        <p>
+          Visualize a produção anual de diferentes municípios em mapa
+          interativo.
+        </p>
+        <button routerLink="/leaflet-city-production" class="btn">
+          Ir para Produção
+        </button>
       </div>
+
       <div class="card">
-        <h2>Comparação entre Estados</h2>
-        <p>Compare dados de produção entre diferentes estados.</p>
-        <button routerLink="/comparing-states" class="btn">Ir para Comparação</button>
+        <h2>Lavoura Permanente</h2>
+        <p>Acesse dados detalhados e gráficos sobre culturas permanentes.</p>
+        <button routerLink="/permanent-crop" class="btn">
+          Ir para Dashboard
+        </button>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 DATA ROOTS - Plataforma de visualização de dados do agronegócio</p>
+    <p>
+      &copy; 2025 DATA ROOTS - Plataforma de visualização de dados do
+      agronegócio
+    </p>
   </footer>
 </div>
