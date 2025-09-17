@@ -17,6 +17,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
   selectedAno: number | null = null;
   loadingUFs = true;
   loadingProdutos = false;
+  buscaRealizada = false;
 
   municipios: MunicipioProduzido[] = [];
   private map!: L.Map;
@@ -56,6 +57,8 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
 
   buscarProdutos(): void {
     if (!this.selectedUF || !this.selectedAno) return;
+
+    this.buscaRealizada = true;
 
     this.produtos = [];
     this.selectedProduto = '';

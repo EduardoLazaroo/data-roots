@@ -19,13 +19,13 @@ export class DataService {
   getMunicipios(uf: string): Observable<Municipio[]> {
     const params = new HttpParams().set('uf', uf);
     return this.http.get<any>(this.API_URL_DASHBOARD + 'municipios', { params }).pipe(
-      map((res) =>
-        (res.results ?? []).map((m: any) => ({
-          id_municipio: Number(m.id_municipio),
-          municipio: m.municipio,
-        }))
-      )
-    );
+        map((res) =>
+          (res.results ?? []).map((m: any) => ({
+            id_municipio: Number(m.id_municipio),
+            municipio: m.municipio,
+          }))
+        )
+      );
   }
 
   getProdutos(uf: string, id_municipio: number, ano: number, min_area: number = 1): Observable<Produto[]> {
@@ -47,12 +47,14 @@ export class DataService {
       .pipe(map((res) => res ?? []));
   }
 
-  compareStates(uf1: string, uf2: string, produto: string, ano: number): Observable<any[]> {
-    const params = new HttpParams()
-      .set('uf1', uf1)
-      .set('uf2', uf2)
+  compareStates(produto: string, ano: number, ufs: string[]): Observable<any[]> {
+    let params = new HttpParams()
       .set('produto', produto)
       .set('ano', ano.toString());
+
+    ufs.forEach((uf) => {
+      params = params.append('ufs', uf);
+    });
 
     return this.http
       .get<any>(this.API_URL_COMPARING + 'compare', { params })

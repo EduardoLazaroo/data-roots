@@ -10,12 +10,14 @@ export class ComparingStatesComponent {
   selectedAno: number | null = null;
   produtos: any[] = [];
   selectedProduto: string = '';
-  selectedUF1: string = '';
-  selectedUF2: string = '';
+  selectedUFs: string[] = [];
+  ufsFiltradas: string[] = [];
   comparison: any[] = [];
 
   loadingProdutos = false;
   loadingCompare = false;
+
+  chartOptions: any = {};
 
   constructor(private dataService: DataService) {}
 
@@ -34,18 +36,52 @@ export class ComparingStatesComponent {
     });
   }
 
+  onProdutoSelecionado() {
+    const produtoEncontrado = this.produtos.find(
+      (p) => p.produto === this.selectedProduto
+    );
+    this.ufsFiltradas = produtoEncontrado?.ufs || [];
+    this.selectedUFs = [];
+  }
+
   compare() {
-    if (!this.selectedUF1 || !this.selectedUF2 || !this.selectedProduto || !this.selectedAno) return;
+    if (!this.selectedProduto || !this.selectedAno || this.selectedUFs.length === 0) return;
     this.loadingCompare = true;
     this.comparison = [];
-    this.dataService.compareStates(this.selectedUF1, this.selectedUF2, this.selectedProduto, this.selectedAno).subscribe({
-      next: (res) => {
-        this.comparison = res;
-        this.loadingCompare = false;
+    this.dataService
+      .compareStates(this.selectedProduto, this.selectedAno, this.selectedUFs)
+      .subscribe({
+        next: (res) => {
+          this.comparison = res;
+          this.updateChart();
+          this.loadingCompare = false;
+        },
+        error: () => {
+          this.loadingCompare = false;
+        },
+      });
+  }
+
+  updateChart() {
+    this.chartOptions = {
+      title: {
+        text: `Produção de ${this.selectedProduto} (${this.selectedAno})`,
       },
-      error: () => {
-        this.loadingCompare = false;
+      tooltip: {},
+      xAxis: {
+        type: 'category',
+        data: this.comparison.map((c) => c.sigla_uf),
       },
-    });
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: 'Produção',
+          type: 'bar',
+          data: this.comparison.map((c) => c.total_producao),
+        },
+      ],
+    };
   }
 }

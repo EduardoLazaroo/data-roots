@@ -28,27 +28,38 @@ def get_products_and_ufs_by_year(ano: int):
     result = [{"produto": p, "ufs": ufs} for p, ufs in produtos_ufs.items()]
     return result
 
-
-def compare_states_by_product_and_year(uf1: str, uf2: str, produto: str, ano: int):
+def compare_states_by_product_and_year(produto: str, ano: int, ufs: list[str] = None):
     query = """
         SELECT
             sigla_uf,
             ano,
             SUM(quantidade_produzida) AS total_producao
         FROM `basedosdados.br_ibge_pam.lavoura_permanente`
-        WHERE sigla_uf IN (@uf1, @uf2)
-          AND produto = @produto
+        WHERE produto = @produto
           AND ano = @ano
+    """
+
+    params = [
+        bigquery.ScalarQueryParameter("produto", "STRING", produto),
+        bigquery.ScalarQueryParameter("ano", "INT64", ano),
+    ]
+
+    if ufs and len(ufs) > 0:
+        # gera lista dinâmica de parâmetros
+        uf_params = []
+        placeholders = []
+        for i, uf in enumerate(ufs):
+            param_name = f"uf{i}"
+            uf_params.append(bigquery.ScalarQueryParameter(param_name, "STRING", uf))
+            placeholders.append(f"@{param_name}")
+        query += f" AND sigla_uf IN ({','.join(placeholders)})"
+        params.extend(uf_params)
+
+    query += """
         GROUP BY sigla_uf, ano
         ORDER BY total_producao DESC
     """
-    job_config = bigquery.QueryJobConfig(
-        query_parameters=[
-            bigquery.ScalarQueryParameter("uf1", "STRING", uf1),
-            bigquery.ScalarQueryParameter("uf2", "STRING", uf2),
-            bigquery.ScalarQueryParameter("produto", "STRING", produto),
-            bigquery.ScalarQueryParameter("ano", "INT64", ano)
-        ]
-    )
+
+    job_config = bigquery.QueryJobConfig(query_parameters=params)
     df = client.query(query, job_config=job_config).to_dataframe()
     return df.to_dict(orient="records")
