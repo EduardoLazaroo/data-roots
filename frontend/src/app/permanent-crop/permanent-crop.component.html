@@ -61,12 +61,20 @@
           <tr>
             <th>Produto</th>
             <th>Área Colhida (ha)</th>
+            <th>Área Destinada à Colheita (ha)</th>
+            <th>Quantidade Produzida (ton)</th>
+            <th>Rendimento Médio de Produção (kg/ha)</th>
+            <th>Valor da Produção (R$)</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let p of produtos">
             <td>{{ p.produto }}</td>
             <td>{{ p.area_colhida | number : "1.0-2" }}</td>
+            <td>{{ p.area_destinada_colheita | number : "1.0-2" }}</td>
+            <td>{{ p.quantidade_produzida | number : "1.0-2" }}</td>
+            <td>{{ p.rendimento_medio_producao | number : "1.0-2" }}</td>
+            <td>{{ p.valor_producao | currency : "BRL" }}</td>
           </tr>
         </tbody>
       </table>

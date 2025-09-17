@@ -73,21 +73,34 @@ export class PermanentCropComponent implements OnInit {
         },
       });
   }
-
   updateChart() {
     this.chartOptions = {
-      tooltip: {},
-      xAxis: {
-        type: 'category',
-        data: this.produtos.map((p) => p.produto),
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b}: {c} ha ({d}%)',
       },
-      yAxis: {
-        type: 'value',
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: this.produtos.map((p) => p.produto),
       },
       series: [
         {
-          data: this.produtos.map((p) => p.area_colhida),
-          type: 'bar',
+          name: 'Área Colhida',
+          type: 'pie',
+          radius: '70%',
+          center: ['50%', '60%'],
+          data: this.produtos.map((p) => ({
+            name: p.produto,
+            value: p.area_colhida,
+          })),
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
         },
       ],
     };

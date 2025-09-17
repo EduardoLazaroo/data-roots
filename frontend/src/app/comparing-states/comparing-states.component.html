@@ -17,11 +17,7 @@
 
     <div class="filter-card">
       <label for="produto">Produto</label>
-      <select
-        id="produto"
-        [(ngModel)]="selectedProduto"
-        (change)="onProdutoSelecionado()"
-      >
+      <select id="produto" [(ngModel)]="selectedProduto">
         <option *ngFor="let produto of produtos" [value]="produto.produto">
           {{ produto.produto }}
         </option>
@@ -29,27 +25,42 @@
     </div>
 
     <div class="filter-card">
-      <label for="ufs">UFs</label>
-      <select
-        id="ufs"
-        [(ngModel)]="selectedUFs"
-        multiple
-        size="5"
-      >
-        <option *ngFor="let uf of ufsFiltradas" [value]="uf">
-          {{ uf }}
-        </option>
-      </select>
-    </div>
-
-    <div class="filter-card">
-      <button
-        class="btn"
-        (click)="compare()"
-        [disabled]="loadingCompare"
-      >
-        {{ loadingCompare ? 'Carregando...' : 'Comparar' }}
+      <button class="btn" (click)="compare()" [disabled]="loadingCompare">
+        {{ loadingCompare ? "Carregando..." : "Comparar" }}
       </button>
+    </div>
+  </div>
+
+  <div
+    class="products-container"
+    *ngIf="!loadingCompare && comparison.length > 0"
+  >
+    <div class="card">
+      <h2>Dados por Estado</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Produção</th>
+            <th>Área Colhida</th>
+            <th>Área Destinada à Colheita</th>
+            <th>Rendimento Médio</th>
+            <th>Valor Produzido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of comparison">
+            <td>{{ c.sigla_uf | ufName }}</td>
+            <td>{{ c.total_producao | number : "1.0-2" }}</td>
+            <td>{{ c.area_colhida | number : "1.0-2" }}</td>
+            <td>{{ c.area_destinada_colheita | number : "1.0-2" }}</td>
+            <td>{{ c.rendimento_medio_producao | number : "1.0-2" }}</td>
+            <td>
+              {{ c.valor_producao | currency : "BRL" : "symbol" : "1.0-2" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -58,7 +69,7 @@
   </div>
 
   <div
-    *ngIf="!loadingCompare && comparison.length === 0 && selectedUFs.length > 0"
+    *ngIf="!loadingCompare && comparison.length === 0 && selectedProduto"
     class="loading"
   >
     Nenhum dado encontrado para comparação.

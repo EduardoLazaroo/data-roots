@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../services/dashboard.service';
+import { ComparacaoProduto, Produto } from '../models/dashboard-models.model';
 
 @Component({
   selector: 'app-comparing-states',
@@ -10,9 +11,7 @@ export class ComparingStatesComponent {
   selectedAno: number | null = null;
   produtos: any[] = [];
   selectedProduto: string = '';
-  selectedUFs: string[] = [];
-  ufsFiltradas: string[] = [];
-  comparison: any[] = [];
+  comparison: ComparacaoProduto[] = [];
 
   loadingProdutos = false;
   loadingCompare = false;
@@ -36,52 +35,58 @@ export class ComparingStatesComponent {
     });
   }
 
-  onProdutoSelecionado() {
-    const produtoEncontrado = this.produtos.find(
-      (p) => p.produto === this.selectedProduto
-    );
-    this.ufsFiltradas = produtoEncontrado?.ufs || [];
-    this.selectedUFs = [];
-  }
+compare() {
+  if (!this.selectedProduto || !this.selectedAno) return;
+  this.loadingCompare = true;
+  this.comparison = [];
 
-  compare() {
-    if (!this.selectedProduto || !this.selectedAno || this.selectedUFs.length === 0) return;
-    this.loadingCompare = true;
-    this.comparison = [];
-    this.dataService
-      .compareStates(this.selectedProduto, this.selectedAno, this.selectedUFs)
-      .subscribe({
-        next: (res) => {
-          this.comparison = res;
-          this.updateChart();
-          this.loadingCompare = false;
-        },
-        error: () => {
-          this.loadingCompare = false;
-        },
-      });
-  }
+  const produtoEncontrado = this.produtos.find(
+    (p) => p.produto === this.selectedProduto
+  );
+  const selectedUFs = produtoEncontrado?.ufs || [];
+
+  this.dataService
+    .compareStates(this.selectedProduto, this.selectedAno, selectedUFs)
+    .subscribe({
+      next: (res) => {
+        this.comparison = res;
+        this.updateChart();
+        this.loadingCompare = false;
+      },
+      error: () => {
+        this.loadingCompare = false;
+      },
+    });
+}
 
   updateChart() {
+    const legendSelected: any = {};
+    this.comparison.forEach((c) => (legendSelected[c.sigla_uf] = true));
+
     this.chartOptions = {
       title: {
         text: `Produção de ${this.selectedProduto} (${this.selectedAno})`,
       },
       tooltip: {},
+      legend: {
+        data: this.comparison.map((c) => c.sigla_uf),
+        selected: legendSelected,
+        orient: 'horizontal',
+        bottom: 10,
+        left: 'center'
+      },
       xAxis: {
         type: 'category',
-        data: this.comparison.map((c) => c.sigla_uf),
+        data: [this.selectedProduto],
       },
       yAxis: {
         type: 'value',
       },
-      series: [
-        {
-          name: 'Produção',
-          type: 'bar',
-          data: this.comparison.map((c) => c.total_producao),
-        },
-      ],
+      series: this.comparison.map((c) => ({
+        name: c.sigla_uf,
+        type: 'bar',
+        data: [c.total_producao]
+      })),
     };
   }
 }

@@ -1,4 +1,3 @@
-// src/app/shared/uf-names.ts
 export const UF_NAMES: { [key: string]: string } = {
   "AC": "Acre",
   "AL": "Alagoas",

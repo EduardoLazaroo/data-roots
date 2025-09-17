@@ -36,7 +36,13 @@ def get_produtos_por_municipio_ano(
     min_area: float = 1.0
 ):
     query = """
-        SELECT produto, area_colhida
+        SELECT 
+            produto, 
+            area_colhida, 
+            area_destinada_colheita, 
+            rendimento_medio_producao, 
+            valor_producao, quantidade_produzida
+            quantidade_produzida
         FROM `basedosdados.br_ibge_pam.lavoura_permanente`
         WHERE sigla_uf = @uf
           AND CAST(id_municipio AS INT64) = @id_municipio

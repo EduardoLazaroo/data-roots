@@ -33,7 +33,11 @@ def compare_states_by_product_and_year(produto: str, ano: int, ufs: list[str] = 
         SELECT
             sigla_uf,
             ano,
-            SUM(quantidade_produzida) AS total_producao
+            SUM(quantidade_produzida) AS total_producao,
+            SUM(area_destinada_colheita) AS area_destinada_colheita,
+            SUM(area_colhida) AS area_colhida,
+            AVG(rendimento_medio_producao) AS rendimento_medio_producao,
+            SUM(valor_producao) AS valor_producao
         FROM `basedosdados.br_ibge_pam.lavoura_permanente`
         WHERE produto = @produto
           AND ano = @ano
@@ -45,7 +49,6 @@ def compare_states_by_product_and_year(produto: str, ano: int, ufs: list[str] = 
     ]
 
     if ufs and len(ufs) > 0:
-        # gera lista dinâmica de parâmetros
         uf_params = []
         placeholders = []
         for i, uf in enumerate(ufs):
