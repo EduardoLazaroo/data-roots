@@ -1,20 +1,37 @@
 from google.cloud import bigquery
+from fastapi import HTTPException
 
 client = bigquery.Client()
 
-def get_products_and_ufs_by_year(ano: int):
-    query = """
+# Bases permitidas
+ALLOWED_BASES = {
+    "permanente": "basedosdados.br_ibge_pam.lavoura_permanente",
+    "temporaria": "basedosdados.br_ibge_pam.lavoura_temporaria",
+}
+
+def _get_base(tipo: str) -> str:
+    if tipo not in ALLOWED_BASES:
+        raise HTTPException(status_code=400, detail=f"Tipo de base inválido: {tipo}")
+    return ALLOWED_BASES[tipo]
+
+
+def get_products_and_ufs_by_year(ano: int, tipo: str = "permanente"):
+    table = _get_base(tipo)
+
+    query = f"""
         SELECT DISTINCT produto, sigla_uf
-        FROM `basedosdados.br_ibge_pam.lavoura_permanente`
+        FROM `{table}`
         WHERE ano = @ano
           AND quantidade_produzida > 0
         ORDER BY produto, sigla_uf
     """
+
     job_config = bigquery.QueryJobConfig(
         query_parameters=[
             bigquery.ScalarQueryParameter("ano", "INT64", ano)
         ]
     )
+
     df = client.query(query, job_config=job_config).to_dataframe()
 
     produtos_ufs = {}
@@ -28,17 +45,19 @@ def get_products_and_ufs_by_year(ano: int):
     result = [{"produto": p, "ufs": ufs} for p, ufs in produtos_ufs.items()]
     return result
 
-def compare_states_by_product_and_year(produto: str, ano: int, ufs: list[str] = None):
-    query = """
+
+def compare_states_by_product_and_year(produto: str, ano: int, ufs: list[str] = None, tipo: str = "permanente"):
+    table = _get_base(tipo)
+
+    query = f"""
         SELECT
             sigla_uf,
             ano,
             SUM(quantidade_produzida) AS total_producao,
-            SUM(area_destinada_colheita) AS area_destinada_colheita,
             SUM(area_colhida) AS area_colhida,
             AVG(rendimento_medio_producao) AS rendimento_medio_producao,
             SUM(valor_producao) AS valor_producao
-        FROM `basedosdados.br_ibge_pam.lavoura_permanente`
+        FROM `{table}`
         WHERE produto = @produto
           AND ano = @ano
     """

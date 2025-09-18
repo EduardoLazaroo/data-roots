@@ -8,6 +8,18 @@
   </div>
 
   <div class="filters-container">
+    <button
+      [class.active]="tipo === 'permanente'"
+      (click)="setTipo('permanente')"
+    >
+      Permanente
+    </button>
+    <button
+      [class.active]="tipo === 'temporaria'"
+      (click)="setTipo('temporaria')"
+    >
+      Temporária
+    </button>
     <div>
       <label for="uf">Estados</label>
       <select id="uf" [(ngModel)]="selectedUF" (change)="onUFChange()">
@@ -52,7 +64,9 @@
     </button>
   </div>
 
-  <div *ngIf="loadingMunicipios || loadingProdutos" class="loading">Carregando...</div>
+  <div *ngIf="loadingMunicipios || loadingProdutos" class="loading">
+    Carregando...
+  </div>
 
   <div class="products-container" *ngIf="!loadingProdutos && produtos.length">
     <div class="card div-table">

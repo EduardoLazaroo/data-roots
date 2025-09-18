@@ -9,23 +9,32 @@ export class LeafletService {
 
   constructor(private http: HttpClient) {}
 
-  getUFs(): Observable<{ sigla_uf: string; nome: string }[]> {
-    return this.http.get<{ sigla_uf: string; nome: string }[]>(
-      `${this.API_URL}ufs`
-    );
+  getUFs(tipo: string = 'permanente'): Observable<{ sigla_uf: string; nome: string }[]> {
+    const params = new HttpParams().set('tipo', tipo);
+    return this.http.get<{ sigla_uf: string; nome: string }[]>(`${this.API_URL}ufs`, { params });
   }
 
-  getProdutosPorUF(uf: string, ano: number): Observable<ProdutoUF[]> {
-    const params = new HttpParams().set('uf', uf).set('ano', ano.toString());
+  getProdutosPorUF(uf: string, ano: number, tipo: string = 'permanente'): Observable<ProdutoUF[]> {
+    const params = new HttpParams()
+      .set('uf', uf)
+      .set('ano', ano.toString())
+      .set('tipo', tipo);
     return this.http.get<ProdutoUF[]>(`${this.API_URL}produtos`, { params });
   }
 
-  getMunicipios(uf: string, ano: number, produto: string, limit: number = 10): Observable<MunicipioProduzido[]> {
+  getMunicipios(
+    uf: string,
+    ano: number,
+    produto: string,
+    limit: number = 10,
+    tipo: string = 'permanente'
+  ): Observable<MunicipioProduzido[]> {
     let params = new HttpParams()
       .set('uf', uf)
       .set('ano', ano.toString())
-      .set('produto', encodeURIComponent(produto)) // força encode seguro
-      .set('limit', limit.toString());
+      .set('produto', encodeURIComponent(produto))
+      .set('limit', limit.toString())
+      .set('tipo', tipo);
 
     return this.http.get<MunicipioProduzido[]>(`${this.API_URL}municipios`, { params });
   }

@@ -14,6 +14,20 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+button {
+  margin-right: 5px;
+  padding: 5px 12px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #ddd;
+}
 
 .product-card {
   background-color: #ffffff;

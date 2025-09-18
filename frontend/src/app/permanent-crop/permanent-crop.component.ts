@@ -15,6 +15,7 @@ export class PermanentCropComponent implements OnInit {
   selectedUF: string = '';
   selectedMunicipio: number | null = null;
   selectedAno: number | null = null;
+  tipo: 'permanente' | 'temporaria' = 'permanente';
 
   loadingUFs = true;
   loadingMunicipios = false;
@@ -25,7 +26,23 @@ export class PermanentCropComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.getUFs().subscribe({
+    this.fetchUFs();
+  }
+
+  setTipo(value: 'permanente' | 'temporaria') {
+    if (this.tipo !== value) {
+      this.tipo = value;
+      this.fetchUFs();
+      this.municipios = [];
+      this.produtos = [];
+      this.selectedUF = '';
+      this.selectedMunicipio = null;
+    }
+  }
+
+  fetchUFs() {
+    this.loadingUFs = true;
+    this.dataService.getUFs(this.tipo).subscribe({
       next: (ufs) => {
         this.ufs = ufs;
         this.loadingUFs = false;
@@ -40,7 +57,7 @@ export class PermanentCropComponent implements OnInit {
   onUFChange() {
     if (!this.selectedUF) return;
     this.loadingMunicipios = true;
-    this.dataService.getMunicipios(this.selectedUF).subscribe({
+    this.dataService.getMunicipios(this.selectedUF, this.tipo).subscribe({
       next: (muns) => {
         this.municipios = muns;
         this.selectedMunicipio = null;
@@ -60,7 +77,13 @@ export class PermanentCropComponent implements OnInit {
 
     this.loadingProdutos = true;
     this.dataService
-      .getProdutos(this.selectedUF, this.selectedMunicipio, this.selectedAno)
+      .getProdutos(
+        this.selectedUF,
+        this.selectedMunicipio,
+        this.selectedAno,
+        1,
+        this.tipo
+      )
       .subscribe({
         next: (prods) => {
           this.produtos = prods;
@@ -73,6 +96,7 @@ export class PermanentCropComponent implements OnInit {
         },
       });
   }
+
   updateChart() {
     this.chartOptions = {
       tooltip: {

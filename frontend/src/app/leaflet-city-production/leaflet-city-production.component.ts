@@ -15,6 +15,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
   selectedUF: string = '';
   selectedProduto: string = '';
   selectedAno: number | null = null;
+  selectedTipo: string = 'permanente';
   loadingUFs = true;
   loadingProdutos = false;
   buscaRealizada = false;
@@ -43,7 +44,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
   }
 
   private loadUFs(): void {
-    this.leafletService.getUFs().subscribe({
+    this.leafletService.getUFs(this.selectedTipo).subscribe({
       next: (data) => {
         this.ufs = data;
         this.loadingUFs = false;
@@ -53,6 +54,16 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
         this.loadingUFs = false;
       },
     });
+  }
+
+  setTipo(tipo: string): void {
+    this.selectedTipo = tipo;
+    this.selectedUF = '';
+    this.selectedProduto = '';
+    this.produtos = [];
+    this.municipios = [];
+    this.markers.clearLayers();
+    this.loadUFs();
   }
 
   buscarProdutos(): void {
@@ -68,7 +79,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
     this.loadingProdutos = true;
 
     this.leafletService
-      .getProdutosPorUF(this.selectedUF, this.selectedAno)
+      .getProdutosPorUF(this.selectedUF, this.selectedAno, this.selectedTipo)
       .subscribe({
         next: (data) => {
           this.produtos = data;
@@ -90,7 +101,7 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
     if (!this.selectedUF || !this.selectedProduto || !this.selectedAno) return;
 
     this.leafletService
-      .getMunicipios(this.selectedUF, this.selectedAno, this.selectedProduto)
+      .getMunicipios(this.selectedUF, this.selectedAno, this.selectedProduto, 10, this.selectedTipo)
       .subscribe({
         next: (data) => {
           this.municipios = data;
@@ -105,12 +116,12 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
 
     this.municipios.forEach((m) => {
       const popupContent = `
-      <b>${m.municipio}</b><br>
-      Produção: ${m.quantidade_produzida.toLocaleString('pt-BR')}<br>
-      Área: ${m.area_colhida.toLocaleString('pt-BR')} ha<br>
-      Rendimento: ${m.rendimento_medio_producao.toLocaleString('pt-BR')} /ha<br>
-      Valor: R$ ${m.valor_producao.toLocaleString('pt-BR')}
-    `;
+        <b>${m.municipio}</b><br>
+        Produção: ${m.quantidade_produzida.toLocaleString('pt-BR')}<br>
+        Área: ${m.area_colhida.toLocaleString('pt-BR')} ha<br>
+        Rendimento: ${m.rendimento_medio_producao.toLocaleString('pt-BR')} /ha<br>
+        Valor: R$ ${m.valor_producao.toLocaleString('pt-BR')}
+      `;
 
       const marker = L.circleMarker([m.latitude, m.longitude], {
         radius: 8,

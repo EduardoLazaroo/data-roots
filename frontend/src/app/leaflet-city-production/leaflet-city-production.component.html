@@ -8,6 +8,21 @@
   </div>
 
   <div class="filters-container">
+    <div class="tipo-buttons">
+      <button
+        (click)="setTipo('permanente')"
+        [class.active]="selectedTipo === 'permanente'"
+      >
+        Permanente
+      </button>
+      <button
+        (click)="setTipo('temporaria')"
+        [class.active]="selectedTipo === 'temporaria'"
+      >
+        Temporária
+      </button>
+    </div>
+
     <div>
       <label for="uf">Estados</label>
       <select id="uf" [(ngModel)]="selectedUF">

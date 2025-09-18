@@ -8,6 +8,19 @@
   </div>
 
   <div class="filters-container">
+    <button
+      [class.active]="tipo === 'permanente'"
+      (click)="setTipo('permanente')"
+    >
+      Permanente
+    </button>
+    <button
+      [class.active]="tipo === 'temporaria'"
+      (click)="setTipo('temporaria')"
+    >
+      Temporária
+    </button>
+
     <div>
       <label for="ano">Ano</label>
       <input

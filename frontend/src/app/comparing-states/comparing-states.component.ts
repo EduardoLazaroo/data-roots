@@ -18,13 +18,24 @@ export class ComparingStatesComponent {
 
   chartOptions: any = {};
 
+  tipo: 'permanente' | 'temporaria' = 'permanente';
+
   constructor(private dataService: DataService) {}
+
+  setTipo(value: 'permanente' | 'temporaria') {
+    if (this.tipo !== value) {
+      this.tipo = value;
+      if (this.selectedAno) {
+        this.fetchProducts();
+      }
+    }
+  }
 
   fetchProducts() {
     if (!this.selectedAno) return;
     this.loadingProdutos = true;
     this.produtos = [];
-    this.dataService.getProductsAndUfsByYear(this.selectedAno).subscribe({
+    this.dataService.getProductsAndUfsByYear(this.selectedAno, this.tipo).subscribe({
       next: (res) => {
         this.produtos = res;
         this.loadingProdutos = false;
@@ -35,29 +46,29 @@ export class ComparingStatesComponent {
     });
   }
 
-compare() {
-  if (!this.selectedProduto || !this.selectedAno) return;
-  this.loadingCompare = true;
-  this.comparison = [];
+  compare() {
+    if (!this.selectedProduto || !this.selectedAno) return;
+    this.loadingCompare = true;
+    this.comparison = [];
 
-  const produtoEncontrado = this.produtos.find(
-    (p) => p.produto === this.selectedProduto
-  );
-  const selectedUFs = produtoEncontrado?.ufs || [];
+    const produtoEncontrado = this.produtos.find(
+      (p) => p.produto === this.selectedProduto
+    );
+    const selectedUFs = produtoEncontrado?.ufs || [];
 
-  this.dataService
-    .compareStates(this.selectedProduto, this.selectedAno, selectedUFs)
-    .subscribe({
-      next: (res) => {
-        this.comparison = res;
-        this.updateChart();
-        this.loadingCompare = false;
-      },
-      error: () => {
-        this.loadingCompare = false;
-      },
-    });
-}
+    this.dataService
+      .compareStates(this.selectedProduto, this.selectedAno, selectedUFs, this.tipo)
+      .subscribe({
+        next: (res) => {
+          this.comparison = res;
+          this.updateChart();
+          this.loadingCompare = false;
+        },
+        error: () => {
+          this.loadingCompare = false;
+        },
+      });
+  }
 
   updateChart() {
     const legendSelected: any = {};
@@ -73,7 +84,7 @@ compare() {
         selected: legendSelected,
         orient: 'horizontal',
         bottom: 10,
-        left: 'center'
+        left: 'center',
       },
       xAxis: {
         type: 'category',
@@ -85,7 +96,7 @@ compare() {
       series: this.comparison.map((c) => ({
         name: c.sigla_uf,
         type: 'bar',
-        data: [c.total_producao]
+        data: [c.total_producao],
       })),
     };
   }
