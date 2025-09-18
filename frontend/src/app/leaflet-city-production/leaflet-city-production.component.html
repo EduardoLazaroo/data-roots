@@ -1,12 +1,17 @@
 <div class="dashboard-container">
-  <h1>Produção por Município</h1>
+  <header>
+    <img src="assets/logo-hor.svg" alt="DATA ROOTS Logo" class="logo" />
+  </header>
+
+  <div class="go-back">
+    <button class="btn" routerLink="/home">Voltar</button>
+  </div>
 
   <div class="filters-container">
-    <div class="filter-card">
-      <label for="uf">UF</label>
-      <div *ngIf="loadingUFs" class="loading">Carregando...</div>
-      <select id="uf" [(ngModel)]="selectedUF" [disabled]="loadingUFs">
-        <option value="" disabled selected>-- Escolha uma UF --</option>
+    <div>
+      <label for="uf">Estados</label>
+      <select id="uf" [(ngModel)]="selectedUF">
+        <option value="" disabled selected>Escolha o estado</option>
         <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
           {{ uf.sigla_uf | ufName }}
         </option>
@@ -25,37 +30,41 @@
           min="1974"
           max="2023"
         />
-        <button (click)="buscarProdutos()">Buscar</button>
       </div>
+    </div>
+    <div class="div-btn">
+      <button
+        class="btn btn-primary"
+        (click)="buscarProdutos()"
+        [disabled]="!selectedProduto && !selectedAno"
+      >
+        Buscar
+      </button>
     </div>
   </div>
 
-  <div id="map" class="map-container"></div>
-
-  <div class="products-container" *ngIf="produtos.length">
-    <h2>Selecione um Produto</h2>
-    <div class="products-grid">
-      <div class="product-card" *ngFor="let p of produtos">
-        <div class="product-info">
-          <strong>{{ p.produto }}</strong
-          ><br />
-          Área colhida: {{ p.area_colhida_total | number : "1.0-0" }} ha
-        </div>
-        <button (click)="selectProduto(p.produto)">Selecionar</button>
-      </div>
-    </div>
-  </div>
-
-  <div
-    *ngIf="!loadingProdutos && !produtos.length && selectedUF && selectedAno"
-    class="no-data"
-  >
-    Nenhum produto encontrado para a UF {{ selectedUF }} em {{ selectedAno }}.
-  </div>
   <div
     *ngIf="selectedProduto && !municipios.length && !loadingProdutos"
     class="no-data"
   >
     Nenhum município encontrado para o produto "{{ selectedProduto }}".
   </div>
+
+  <div class="products-container" *ngIf="produtos.length">
+    <h2>Selecione um Produto</h2>
+    <div class="products-grid">
+      <div class="card" *ngFor="let p of produtos">
+        <div>
+          <strong>{{ p.produto }}</strong
+          ><br />
+          Área colhida: {{ p.area_colhida_total | number : "1.0-0" }} ha
+        </div>
+        <button class="btn btn-primary" (click)="selectProduto(p.produto)">
+          Selecionar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="map" class="map-container"></div>
 </div>

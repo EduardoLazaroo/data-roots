@@ -2,33 +2,20 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #e9f6cf;
-  color: #2e7d32;
   text-align: center;
-  padding: 3vw;
-  gap: 2vh;
-}
-
-header {
-  display: flex;
-}
-
-header .logo {
-  width: 200px;
-  height: auto;
-}
-
-.go-back {
-  display: flex;
+  padding: 12px;
+  gap: 24px;
 }
 
 h2.intro {
-  font-size: 65px;
+  font-size: 50px;
   font-weight: 700;
 }
 
 main {
-  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .home-cards {
@@ -37,14 +24,12 @@ main {
   gap: 20px;
   justify-content: center;
   width: 100%;
-  margin-top: 10vh;
 }
 
 .card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 300px;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -54,48 +39,9 @@ main {
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.card p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-button.btn {
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  background-color: #43a047;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button.btn:hover {
-  background-color: #2e7d32;
-}
-
-footer {
-  margin-top: 50px;
-  font-size: 0.9rem;
-  color: #1b5e20;
-}
-
 @media (max-width: 768px) {
   .home-cards {
     flex-direction: column;
     align-items: center;
-  }
-
-  header h1 {
-    font-size: 2.5rem;
-  }
-
-  header p {
-    font-size: 1rem;
   }
 }

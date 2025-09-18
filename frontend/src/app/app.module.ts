@@ -12,6 +12,8 @@ import { LeafletCityProductionComponent } from './leaflet-city-production/leafle
 import { AppRoutingModule } from './app-routing.module';
 import { UfNamePipe } from './shared/uf-name.pipe';
 import { ComparingStatesComponent } from './comparing-states/comparing-states.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { AboutDetailsComponent } from './about-details/about-details.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ComparingStatesComponent } from './comparing-states/comparing-states.co
     HomeComponent,
     PermanentCropComponent,
     ComparingStatesComponent,
+    LandingPageComponent,
+    AboutDetailsComponent,
     LeafletCityProductionComponent,
     UfNamePipe
   ],

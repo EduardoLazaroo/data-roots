@@ -1,8 +1,14 @@
 <div class="comparing-container">
-  <h1>Comparar Produção por Estados</h1>
+  <header>
+    <img src="assets/logo-hor.svg" alt="DATA ROOTS Logo" class="logo" />
+  </header>
 
-  <div class="filters">
-    <div class="filter-card">
+  <div class="go-back">
+    <button class="btn" routerLink="/home">Voltar</button>
+  </div>
+
+  <div class="filters-container">
+    <div>
       <label for="ano">Ano</label>
       <input
         id="ano"
@@ -15,17 +21,25 @@
       />
     </div>
 
-    <div class="filter-card">
+    <div>
       <label for="produto">Produto</label>
-      <select id="produto" [(ngModel)]="selectedProduto">
+      <select
+        id="produto"
+        [(ngModel)]="selectedProduto"
+        [disabled]="!selectedAno || loadingCompare"
+      >
         <option *ngFor="let produto of produtos" [value]="produto.produto">
           {{ produto.produto }}
         </option>
       </select>
     </div>
 
-    <div class="filter-card">
-      <button class="btn" (click)="compare()" [disabled]="loadingCompare">
+    <div class="comparing-btn">
+      <button
+        class="btn btn-primary"
+        (click)="compare()"
+        [disabled]="!selectedAno || loadingCompare || !selectedProduto"
+      >
         {{ loadingCompare ? "Carregando..." : "Comparar" }}
       </button>
     </div>
@@ -35,7 +49,7 @@
     class="products-container"
     *ngIf="!loadingCompare && comparison.length > 0"
   >
-    <div class="card">
+    <div class="card div-table">
       <h2>Dados por Estado</h2>
       <table class="table">
         <thead>
@@ -64,14 +78,7 @@
     </div>
   </div>
 
-  <div *ngIf="comparison.length > 0">
+  <div *ngIf="comparison.length > 0" class="card">
     <div echarts [options]="chartOptions" class="chart"></div>
-  </div>
-
-  <div
-    *ngIf="!loadingCompare && comparison.length === 0 && selectedProduto"
-    class="loading"
-  >
-    Nenhum dado encontrado para comparação.
   </div>
 </div>
