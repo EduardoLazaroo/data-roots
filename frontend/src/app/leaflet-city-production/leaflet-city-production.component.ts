@@ -1,7 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { LeafletService } from '../services/leaflet.service';
-import { MunicipioProduzido } from '../models/leaflet-models.model';
+import {
+  MunicipioProduzido,
+  Produto,
+  UF,
+} from '../models/leaflet-models.model';
 
 @Component({
   selector: 'app-leaflet-city-production',
@@ -9,8 +13,9 @@ import { MunicipioProduzido } from '../models/leaflet-models.model';
   styleUrls: ['./leaflet-city-production.component.css'],
 })
 export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
-  ufs: { sigla_uf: string; nome: string }[] = [];
-  produtos: { produto: string; area_colhida_total: number }[] = [];
+  ufs: UF[] = [];
+  produtos: Produto[] = [];
+  municipios: MunicipioProduzido[] = [];
 
   selectedUF: string = '';
   selectedProduto: string = '';
@@ -20,7 +25,6 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
   loadingProdutos = false;
   buscaRealizada = false;
 
-  municipios: MunicipioProduzido[] = [];
   private map!: L.Map;
   private markers: L.LayerGroup = L.layerGroup();
 
@@ -101,7 +105,13 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
     if (!this.selectedUF || !this.selectedProduto || !this.selectedAno) return;
 
     this.leafletService
-      .getMunicipios(this.selectedUF, this.selectedAno, this.selectedProduto, 10, this.selectedTipo)
+      .getMunicipios(
+        this.selectedUF,
+        this.selectedAno,
+        this.selectedProduto,
+        10,
+        this.selectedTipo
+      )
       .subscribe({
         next: (data) => {
           this.municipios = data;
@@ -117,10 +127,12 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
     this.municipios.forEach((m) => {
       const popupContent = `
         <b>${m.municipio}</b><br>
-        Produção: ${m.quantidade_produzida.toLocaleString('pt-BR')}<br>
-        Área: ${m.area_colhida.toLocaleString('pt-BR')} ha<br>
-        Rendimento: ${m.rendimento_medio_producao.toLocaleString('pt-BR')} /ha<br>
-        Valor: R$ ${m.valor_producao.toLocaleString('pt-BR')}
+        Produção: ${m.quantidade_total.toLocaleString('pt-BR')} t<br>
+        Área colhida: ${m.area_colhida.toLocaleString('pt-BR')} ha<br>
+        Rendimento médio: ${m.rendimento_medio_producao.toLocaleString(
+          'pt-BR'
+        )} kg/ha<br>
+        Valor da produção: R$ ${m.valor_producao.toLocaleString('pt-BR')} mil
       `;
 
       const marker = L.circleMarker([m.latitude, m.longitude], {

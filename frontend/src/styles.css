@@ -9,9 +9,6 @@
   --primary-color: #739d2e;
   --primary-hover-color: #556b2f;
 
-  --secondary-color: #2563eb;
-  --secondary-hover-color: #1e40af;
-
   --background-primary: #eff1ee;
 
   --text-color: #2b2b2b;
@@ -189,4 +186,40 @@ label {
   border-radius: 6px;
   color: #cc0000;
   font-size: 14px;
+}
+
+/* ==============================
+   Bases de dados
+============================== */
+
+.bases {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+
+.bases button {
+  padding: 7px 14px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  color: gray;
+}
+
+.bases button:hover {
+  background-color: var(--primary-hover-color);
+  color: white;
+}
+
+.bases button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.bases .permanente {
+  border-radius: 10px 0px 0px 10px;
+}
+
+.bases .temporaria {
+  border-radius: 0px 10px 10px 1px;
 }

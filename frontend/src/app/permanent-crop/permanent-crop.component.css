@@ -1,34 +1,30 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 24px);
   padding: 12px;
-  gap: 24px;
+  gap: 12px;
 }
 
 .filters-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   background-color: #ffffff;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 12px 12px 0px 0px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-button.active {
-  background-color: #4caf50;
-  color: white;
+.containers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
 }
-button {
-  margin-right: 5px;
-  padding: 5px 12px;
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #ddd;
+
+.crop-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card {

@@ -18,13 +18,13 @@ export class ComparingStatesComponent {
 
   chartOptions: any = {};
 
-  tipo: 'permanente' | 'temporaria' = 'permanente';
+  selectedTipo: 'permanente' | 'temporaria' = 'permanente';
 
   constructor(private dataService: DataService) {}
 
   setTipo(value: 'permanente' | 'temporaria') {
-    if (this.tipo !== value) {
-      this.tipo = value;
+    if (this.selectedTipo !== value) {
+      this.selectedTipo = value;
       if (this.selectedAno) {
         this.fetchProducts();
       }
@@ -35,7 +35,7 @@ export class ComparingStatesComponent {
     if (!this.selectedAno) return;
     this.loadingProdutos = true;
     this.produtos = [];
-    this.dataService.getProductsAndUfsByYear(this.selectedAno, this.tipo).subscribe({
+    this.dataService.getProductsAndUfsByYear(this.selectedAno, this.selectedTipo).subscribe({
       next: (res) => {
         this.produtos = res;
         this.loadingProdutos = false;
@@ -57,7 +57,7 @@ export class ComparingStatesComponent {
     const selectedUFs = produtoEncontrado?.ufs || [];
 
     this.dataService
-      .compareStates(this.selectedProduto, this.selectedAno, selectedUFs, this.tipo)
+      .compareStates(this.selectedProduto, this.selectedAno, selectedUFs, this.selectedTipo)
       .subscribe({
         next: (res) => {
           this.comparison = res;

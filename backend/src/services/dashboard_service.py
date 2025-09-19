@@ -2,7 +2,6 @@ from google.cloud import bigquery
 
 client = bigquery.Client()
 
-# Bases permitidas
 ALLOWED_BASES = {
     "permanente": "basedosdados.br_ibge_pam.lavoura_permanente",
     "temporaria": "basedosdados.br_ibge_pam.lavoura_temporaria"

@@ -8,7 +8,6 @@ export interface Municipio {
 }
 export interface Produto {
   area_colhida: number;
-  area_destinada_colheita: number;
   produto: string;
   quantidade_produzida: number;
   rendimento_medio_producao: number;
@@ -19,7 +18,5 @@ export interface ComparacaoProduto {
   sigla_uf: string;
   total_producao: number;
   area_colhida: number;
-  area_destinada_colheita: number;
   rendimento_medio_producao: number;
-  valor_producao: number;
 }

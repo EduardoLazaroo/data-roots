@@ -1,6 +1,6 @@
 <div class="comparing-container">
   <header>
-    <img src="assets/logo-hor.svg" alt="DATA ROOTS Logo" class="logo" />
+    <img src="https://files.catbox.moe/4iv55r.svg" alt="DATA.ROOTS Logo" class="logo" />
   </header>
 
   <div class="go-back">
@@ -8,53 +8,58 @@
   </div>
 
   <div class="filters-container">
-    <button
-      [class.active]="tipo === 'permanente'"
-      (click)="setTipo('permanente')"
-    >
-      Permanente
-    </button>
-    <button
-      [class.active]="tipo === 'temporaria'"
-      (click)="setTipo('temporaria')"
-    >
-      Temporária
-    </button>
-
-    <div>
-      <label for="ano">Ano</label>
-      <input
-        id="ano"
-        type="number"
-        [(ngModel)]="selectedAno"
-        placeholder="Ex: 2020"
-        min="1974"
-        max="2023"
-        (change)="fetchProducts()"
-      />
-    </div>
-
-    <div>
-      <label for="produto">Produto</label>
-      <select
-        id="produto"
-        [(ngModel)]="selectedProduto"
-        [disabled]="!selectedAno || loadingCompare"
-      >
-        <option *ngFor="let produto of produtos" [value]="produto.produto">
-          {{ produto.produto }}
-        </option>
-      </select>
-    </div>
-
-    <div class="comparing-btn">
+    <div class="bases">
       <button
-        class="btn btn-primary"
-        (click)="compare()"
-        [disabled]="!selectedAno || loadingCompare || !selectedProduto"
+        class="permanente"
+        [class.active]="selectedTipo === 'permanente'"
+        (click)="setTipo('permanente')"
       >
-        {{ loadingCompare ? "Carregando..." : "Comparar" }}
+        Permanente
       </button>
+      <button
+        class="temporaria"
+        [class.active]="selectedTipo === 'temporaria'"
+        (click)="setTipo('temporaria')"
+      >
+        Temporária
+      </button>
+    </div>
+    <div class="containers">
+      <div>
+        <label for="ano">Ano</label>
+        <input
+          id="ano"
+          type="number"
+          [(ngModel)]="selectedAno"
+          placeholder="Ex: 2020"
+          min="1974"
+          max="2023"
+          (change)="fetchProducts()"
+        />
+      </div>
+
+      <div>
+        <label for="produto">Produto</label>
+        <select
+          id="produto"
+          [(ngModel)]="selectedProduto"
+          [disabled]="!selectedAno || loadingCompare"
+        >
+          <option *ngFor="let produto of produtos" [value]="produto.produto">
+            {{ produto.produto }}
+          </option>
+        </select>
+      </div>
+
+      <div class="comparing-btn">
+        <button
+          class="btn btn-primary"
+          (click)="compare()"
+          [disabled]="!selectedAno || loadingCompare || !selectedProduto"
+        >
+          {{ loadingCompare ? "Carregando..." : "Comparar" }}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -68,23 +73,17 @@
         <thead>
           <tr>
             <th>Estado</th>
-            <th>Produção</th>
-            <th>Área Colhida</th>
-            <th>Área Destinada à Colheita</th>
-            <th>Rendimento Médio</th>
-            <th>Valor Produzido</th>
+            <th>Produção (ton)</th>
+            <th>Área Colhida (ha)</th>
+            <th>Rendimento Médio (kg/ha)</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let c of comparison">
             <td>{{ c.sigla_uf | ufName }}</td>
-            <td>{{ c.total_producao | number : "1.0-2" }}</td>
-            <td>{{ c.area_colhida | number : "1.0-2" }}</td>
-            <td>{{ c.area_destinada_colheita | number : "1.0-2" }}</td>
-            <td>{{ c.rendimento_medio_producao | number : "1.0-2" }}</td>
-            <td>
-              {{ c.valor_producao | currency : "BRL" : "symbol" : "1.0-2" }}
-            </td>
+            <td>{{ c.total_producao | number : "1.0-2" }} ton</td>
+            <td>{{ c.area_colhida | number : "1.0-2" }} ha</td>
+            <td>{{ c.rendimento_medio_producao | number : "1.0-2" }} kg/ha</td>
           </tr>
         </tbody>
       </table>

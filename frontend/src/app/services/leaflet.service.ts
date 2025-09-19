@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProdutoUF, MunicipioProduzido } from '../models/leaflet-models.model';
+import { Produto, MunicipioProduzido } from '../models/leaflet-models.model';
 
 @Injectable({ providedIn: 'root' })
 export class LeafletService {
@@ -14,12 +14,12 @@ export class LeafletService {
     return this.http.get<{ sigla_uf: string; nome: string }[]>(`${this.API_URL}ufs`, { params });
   }
 
-  getProdutosPorUF(uf: string, ano: number, tipo: string = 'permanente'): Observable<ProdutoUF[]> {
+  getProdutosPorUF(uf: string, ano: number, tipo: string = 'permanente'): Observable<Produto[]> {
     const params = new HttpParams()
       .set('uf', uf)
       .set('ano', ano.toString())
       .set('tipo', tipo);
-    return this.http.get<ProdutoUF[]>(`${this.API_URL}produtos`, { params });
+    return this.http.get<Produto[]>(`${this.API_URL}produtos`, { params });
   }
 
   getMunicipios(

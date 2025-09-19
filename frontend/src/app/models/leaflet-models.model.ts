@@ -3,14 +3,19 @@ export interface MunicipioProduzido {
   municipio: string;
   latitude: number;
   longitude: number;
-  quantidade_produzida: number;
-  area_destinada_colheita: number;
+  quantidade_total: number; // <- espera esse nome
   area_colhida: number;
   rendimento_medio_producao: number;
   valor_producao: number;
 }
 
-export interface ProdutoUF {
+
+export interface UF {
+  sigla_uf: string;
+  nome: string;
+}
+
+export interface Produto {
   produto: string;
-  area_colhida_total: number;
+  quantidade_total: number;
 }

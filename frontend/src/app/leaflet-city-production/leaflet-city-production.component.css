@@ -2,42 +2,23 @@
   display: flex;
   flex-direction: column;
   padding: 12px;
-  gap: 24px;
+  gap: 12px;
 }
 
 .filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #ffffff;
+  padding: 12px;
+  border-radius: 12px 12px 0px 0px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.containers {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
-  background-color: #ffffff;
-  padding: 12px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-button.active {
-  background-color: #4CAF50;
-  color: white;
-}
-button {
-  margin-right: 5px;
-  padding: 5px 12px;
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #ddd;
-}
-
-.product-card {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease-in-out;
-}
-.product-card:hover {
-  transform: translateY(-3px);
 }
 
 .div-btn {
@@ -47,11 +28,33 @@ button:hover {
   align-items: center;
 }
 
-.card {
+.master-card {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mini-card {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 10px;
+  padding: 12px;
+  background-color: #ebf1eb;
+  border-radius: 8px;
+  border: 2px solid #7cc51750;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.mini-card:hover {
+  border: 2px solid #ffa500;
+  background-color: #fff7e6;
+}
+
+.mini-card.active {
+  border: 2px solid #ff6600;
+  background-color: #fff3e0;
 }
 
 .map-container {

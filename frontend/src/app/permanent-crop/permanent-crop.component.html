@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   <header>
-    <img src="assets/logo-hor.svg" alt="DATA ROOTS Logo" class="logo" />
+    <img src="https://files.catbox.moe/4iv55r.svg" alt="DATA.ROOTS Logo" class="logo" />
   </header>
 
   <div class="go-back">
@@ -8,60 +8,69 @@
   </div>
 
   <div class="filters-container">
-    <button
-      [class.active]="tipo === 'permanente'"
-      (click)="setTipo('permanente')"
-    >
-      Permanente
-    </button>
-    <button
-      [class.active]="tipo === 'temporaria'"
-      (click)="setTipo('temporaria')"
-    >
-      Temporária
-    </button>
-    <div>
-      <label for="uf">Estados</label>
-      <select id="uf" [(ngModel)]="selectedUF" (change)="onUFChange()">
-        <option value="" disabled selected>Escolha uma estado</option>
-        <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
-          {{ uf.sigla_uf | ufName }}
-        </option>
-      </select>
-    </div>
-
-    <div>
-      <label for="municipio">Município</label>
-      <select
-        id="municipio"
-        [(ngModel)]="selectedMunicipio"
-        [disabled]="!selectedUF || loadingMunicipios"
+    <div class="bases">
+      <button
+        class="permanente"
+        [class.active]="selectedTipo === 'permanente'"
+        (click)="setTipo('permanente')"
       >
-        <option value="" disabled selected>-- Escolha um município --</option>
-        <option *ngFor="let m of municipios" [value]="m.id_municipio">
-          {{ m.municipio }}
-        </option>
-      </select>
+        Permanente
+      </button>
+      <button
+        class="temporaria"
+        [class.active]="selectedTipo === 'temporaria'"
+        (click)="setTipo('temporaria')"
+      >
+        Temporária
+      </button>
     </div>
 
-    <div>
-      <label for="ano">Ano</label>
-      <input
-        id="ano"
-        type="number"
-        [(ngModel)]="selectedAno"
-        placeholder="Ex: 2020"
-        min="1974"
-        max="2023"
-      />
+    <div class="containers">
+      <div>
+        <label for="uf">Estados</label>
+        <select id="uf" [(ngModel)]="selectedUF" (change)="onUFChange()">
+          <option value="" disabled selected>Escolha uma estado</option>
+          <option *ngFor="let uf of ufs" [value]="uf.sigla_uf">
+            {{ uf.sigla_uf | ufName }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label for="municipio">Município</label>
+        <select
+          id="municipio"
+          [(ngModel)]="selectedMunicipio"
+          [disabled]="!selectedUF || loadingMunicipios"
+        >
+          <option value="" disabled selected>-- Escolha um município --</option>
+          <option *ngFor="let m of municipios" [value]="m.id_municipio">
+            {{ m.municipio }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label for="ano">Ano</label>
+        <input
+          id="ano"
+          type="number"
+          [(ngModel)]="selectedAno"
+          placeholder="Ex: 2020"
+          min="1974"
+          max="2023"
+        />
+      </div>
+      <div class="crop-btn">
+        <button
+          class="btn btn-primary"
+          (click)="fetchProdutos()"
+          [disabled]="!selectedUF || !selectedMunicipio || !selectedAno"
+        >
+          Buscar
+        </button>
+      </div>
     </div>
-    <button
-      class="btn btn-primary"
-      (click)="fetchProdutos()"
-      [disabled]="!selectedUF || !selectedMunicipio || !selectedAno"
-    >
-      Buscar
-    </button>
   </div>
 
   <div *ngIf="loadingMunicipios || loadingProdutos" class="loading">
@@ -76,7 +85,6 @@
           <tr>
             <th>Produto</th>
             <th>Área Colhida (ha)</th>
-            <th>Área Destinada à Colheita (ha)</th>
             <th>Quantidade Produzida (ton)</th>
             <th>Rendimento Médio de Produção (kg/ha)</th>
             <th>Valor da Produção (R$)</th>
@@ -85,11 +93,14 @@
         <tbody>
           <tr *ngFor="let p of produtos">
             <td>{{ p.produto }}</td>
-            <td>{{ p.area_colhida | number : "1.0-2" }}</td>
-            <td>{{ p.area_destinada_colheita | number : "1.0-2" }}</td>
-            <td>{{ p.quantidade_produzida | number : "1.0-2" }}</td>
-            <td>{{ p.rendimento_medio_producao | number : "1.0-2" }}</td>
-            <td>{{ p.valor_producao | currency : "BRL" }}</td>
+            <td>{{ p.area_colhida | number : "1.0-2" }} ha</td>
+            <td>{{ p.quantidade_produzida | number : "1.0-2" }} ton</td>
+            <td>{{ p.rendimento_medio_producao | number : "1.0-2" }} kg/ha</td>
+            <td>
+              {{
+                p.valor_producao * 1000 | currency : "BRL" : "symbol" : "1.2-2"
+              }}
+            </td>
           </tr>
         </tbody>
       </table>

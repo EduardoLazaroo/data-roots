@@ -15,7 +15,7 @@ export class PermanentCropComponent implements OnInit {
   selectedUF: string = '';
   selectedMunicipio: number | null = null;
   selectedAno: number | null = null;
-  tipo: 'permanente' | 'temporaria' = 'permanente';
+  selectedTipo: 'permanente' | 'temporaria' = 'permanente';
 
   loadingUFs = true;
   loadingMunicipios = false;
@@ -30,8 +30,8 @@ export class PermanentCropComponent implements OnInit {
   }
 
   setTipo(value: 'permanente' | 'temporaria') {
-    if (this.tipo !== value) {
-      this.tipo = value;
+    if (this.selectedTipo !== value) {
+      this.selectedTipo = value;
       this.fetchUFs();
       this.municipios = [];
       this.produtos = [];
@@ -42,7 +42,7 @@ export class PermanentCropComponent implements OnInit {
 
   fetchUFs() {
     this.loadingUFs = true;
-    this.dataService.getUFs(this.tipo).subscribe({
+    this.dataService.getUFs(this.selectedTipo).subscribe({
       next: (ufs) => {
         this.ufs = ufs;
         this.loadingUFs = false;
@@ -57,7 +57,7 @@ export class PermanentCropComponent implements OnInit {
   onUFChange() {
     if (!this.selectedUF) return;
     this.loadingMunicipios = true;
-    this.dataService.getMunicipios(this.selectedUF, this.tipo).subscribe({
+    this.dataService.getMunicipios(this.selectedUF, this.selectedTipo).subscribe({
       next: (muns) => {
         this.municipios = muns;
         this.selectedMunicipio = null;
@@ -82,7 +82,7 @@ export class PermanentCropComponent implements OnInit {
         this.selectedMunicipio,
         this.selectedAno,
         1,
-        this.tipo
+        this.selectedTipo
       )
       .subscribe({
         next: (prods) => {
