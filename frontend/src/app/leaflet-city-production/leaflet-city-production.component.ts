@@ -127,12 +127,17 @@ export class LeafletCityProductionComponent implements OnInit, AfterViewInit {
     this.municipios.forEach((m) => {
       const popupContent = `
         <b>${m.municipio}</b><br>
-        Produção: ${m.quantidade_total.toLocaleString('pt-BR')} t<br>
+        Produção: ${m.quantidade_total.toLocaleString('pt-BR')} ton<br>
         Área colhida: ${m.area_colhida.toLocaleString('pt-BR')} ha<br>
         Rendimento médio: ${m.rendimento_medio_producao.toLocaleString(
           'pt-BR'
         )} kg/ha<br>
-        Valor da produção: R$ ${m.valor_producao.toLocaleString('pt-BR')} mil
+        Valor da produção: ${new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(m.valor_producao * 1000)}
       `;
 
       const marker = L.circleMarker([m.latitude, m.longitude], {

@@ -1,2 +1,50 @@
-<button routerLink="/home" class="btn btn-primary">Home</button>
+<div class="about-container">
+  <header>
+    <img
+      src="https://files.catbox.moe/4iv55r.svg"
+      routerLink="/"
+      alt="DATA.ROOTS Logo"
+      class="logo"
+    />
+  </header>
 
+  <div class="go-back">
+    <button class="btn" routerLink="/home">Voltar</button>
+  </div>
+
+  <main>
+    <div class="content-center">
+      <div class="content-top">
+        <img
+          src="https://files.catbox.moe/gu2kgo.png"
+          alt="colheita"
+          class="grow"
+        />
+        <div class="text-top">
+          <h2>Bem vindo ao Data Roots modelos de dados!</h2>
+          <p>
+            Aproveite os modelos gratuitos já disponíveis ou peça uma
+            visualização exclusiva pensada para suas necessidades. Aproveite os
+            modelos gratuitos já disponíveis ou peça uma visualização
+          </p>
+        </div>
+      </div>
+      <div class="content-down">
+        <div class="card" *ngFor="let item of items">
+          <img [src]="item.url" alt="Imagem" class="img-card" />
+          <div>
+            <h4>{{ item.titulo }}</h4>
+            <span>{{ item.descricao }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      &copy; 2025 DATA ROOTS - Plataforma de visualização de dados do
+      agronegócio
+    </p>
+  </footer>
+</div>
