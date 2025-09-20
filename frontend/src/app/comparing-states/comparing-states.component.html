@@ -72,26 +72,64 @@
     class="products-container"
     *ngIf="!loadingCompare && comparison.length > 0"
   >
-    <div class="card div-table">
+    <div class="card">
       <h2>Dados por Estado</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Estado</th>
-            <th>Produção (ton)</th>
-            <th>Área Colhida (ha)</th>
-            <th>Rendimento Médio (kg/ha)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let c of comparison">
-            <td>{{ c.sigla_uf | ufName }}</td>
-            <td>{{ c.total_producao | number : "1.0-2" }} ton</td>
-            <td>{{ c.area_colhida | number : "1.0-2" }} ha</td>
-            <td>{{ c.rendimento_medio_producao | number : "1.0-2" }} kg/ha</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Estado</th>
+              <th>Produção (ton)</th>
+              <th>Área Colhida (ha)</th>
+              <th>Rendimento Médio (kg/ha)</th>
+              <th>Valor da Produção (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of comparison">
+              <td>{{ c.sigla_uf | ufName }}</td>
+              <td>{{ c.total_producao | number : "1.0-2" }} ton</td>
+              <td>{{ c.area_colhida | number : "1.0-2" }} ha</td>
+              <td>
+                {{ c.rendimento_medio_producao | number : "1.0-2" }} kg/ha
+              </td>
+              <td>
+                {{
+                  c.valor_producao * 1000
+                    | currency : "BRL" : "symbol" : "1.2-2"
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-ia" *ngIf="!loadingCompare && comparison.length > 0">
+    <div class="generative-ia">
+      <img
+        alt="Imagem"
+        class="img-card"
+        src="https://files.catbox.moe/edvhtl.png"
+      />
+      <div class="card">
+        <span>Já estou com seus dados, deseja gerar um relatório?</span>
+      </div>
+    </div>
+    <div class="div-btn-ia">
+      <button
+        class="btn btn-ia"
+        (click)="gerarAnalise()"
+        [disabled]="!comparison.length || loadingIA"
+      >
+        {{ loadingIA ? "Carregando..." : "Gerar Análise" }}
+      </button>
+    </div>
+
+    <div *ngIf="resumoAnalise" class="resumo-container">
+      <h3>Resumo da Análise:</h3>
+      <div [innerHTML]="resumoAnalise"></div>
     </div>
   </div>
 

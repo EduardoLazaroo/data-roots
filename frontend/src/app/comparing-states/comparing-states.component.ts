@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DataService } from '../services/dashboard.service';
 import { ComparacaoProduto, Produto } from '../models/dashboard-models.model';
+import { AnaliseService } from '../services/chat.service';
 
 @Component({
   selector: 'app-comparing-states',
@@ -15,12 +16,17 @@ export class ComparingStatesComponent {
 
   loadingProdutos = false;
   loadingCompare = false;
-
+  loadingIA = false;
   chartOptions: any = {};
 
   selectedTipo: 'permanente' | 'temporaria' = 'permanente';
 
-  constructor(private dataService: DataService) {}
+  resumoAnalise: string | null = null;
+
+  constructor(
+    private dataService: DataService,
+    private analiseService: AnaliseService
+  ) {}
 
   setTipo(value: 'permanente' | 'temporaria') {
     if (this.selectedTipo !== value) {
@@ -35,15 +41,17 @@ export class ComparingStatesComponent {
     if (!this.selectedAno) return;
     this.loadingProdutos = true;
     this.produtos = [];
-    this.dataService.getProductsAndUfsByYear(this.selectedAno, this.selectedTipo).subscribe({
-      next: (res) => {
-        this.produtos = res;
-        this.loadingProdutos = false;
-      },
-      error: () => {
-        this.loadingProdutos = false;
-      },
-    });
+    this.dataService
+      .getProductsAndUfsByYear(this.selectedAno, this.selectedTipo)
+      .subscribe({
+        next: (res) => {
+          this.produtos = res;
+          this.loadingProdutos = false;
+        },
+        error: () => {
+          this.loadingProdutos = false;
+        },
+      });
   }
 
   compare() {
@@ -57,7 +65,12 @@ export class ComparingStatesComponent {
     const selectedUFs = produtoEncontrado?.ufs || [];
 
     this.dataService
-      .compareStates(this.selectedProduto, this.selectedAno, selectedUFs, this.selectedTipo)
+      .compareStates(
+        this.selectedProduto,
+        this.selectedAno,
+        selectedUFs,
+        this.selectedTipo
+      )
       .subscribe({
         next: (res) => {
           this.comparison = res;
@@ -68,6 +81,34 @@ export class ComparingStatesComponent {
           this.loadingCompare = false;
         },
       });
+  }
+
+  gerarAnalise(): void {
+    if (!this.comparison.length || !this.selectedProduto || !this.selectedAno)
+      return;
+
+    this.loadingIA = true;
+
+    const data = {
+      name: 'ComparingStatesComponent',
+      content: {
+        produto: this.selectedProduto,
+        ano: this.selectedAno,
+        tipo: this.selectedTipo,
+        comparacao: this.comparison,
+      },
+    };
+
+    this.analiseService.gerarRelatorio(data).subscribe({
+      next: (res) => {
+        this.resumoAnalise = res.relatorio;
+        this.loadingIA = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loadingIA = false;
+      },
+    });
   }
 
   updateChart() {

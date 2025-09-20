@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./src ./src
 
+ENV OPENAI_API_KEY=
 COPY credentials.json /app/credentials.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
 ENV PYTHONPATH=/app/src

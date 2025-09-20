@@ -19,4 +19,5 @@ export interface ComparacaoProduto {
   total_producao: number;
   area_colhida: number;
   rendimento_medio_producao: number;
+  valor_producao: number;
 }

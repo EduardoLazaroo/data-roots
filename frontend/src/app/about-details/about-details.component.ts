@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 export class AboutDetailsComponent {
   items = [
     {
-      url: 'https://files.catbox.moe/edvhtl.png',
+      url: 'https://files.catbox.moe/xpueg8.png',
       titulo: 'Gráficos e mapas',
       descricao: 'Temos ótimos gráficos gratuitos',
     },
     {
-      url: 'https://files.catbox.moe/xpueg8.png',
+      url: 'https://files.catbox.moe/edvhtl.png',
       titulo: 'IA para analisar',
       descricao: 'Opção ainda em beta, criação de análises',
     },
