@@ -1,0 +1,20 @@
+=== VALIDAÇÃO INTEGRADA: DATA-ROOTS (RAÍZES) ===
+Framework: FastAPI 0.115.2 | Google BigQuery Client | Pandas 3.0 | Leaflet & ECharts
+
+[TEST 1] Inicialização do FastAPI: Sucesso! Título da API: 'API PAM IBGE'
+Endpoints mapeados:
+  - ['HEAD', 'GET'] /openapi.json
+  - ['HEAD', 'GET'] /docs
+  - ['HEAD', 'GET'] /docs/oauth2-redirect
+  - ['HEAD', 'GET'] /redoc
+
+[TEST 2] GET /leaflet/ufs (Mocked BQ): HTTP 200
+  Resultado (5 UFs retornadas): [{'sigla_uf': 'SP', 'nome': 'SP'}, {'sigla_uf': 'MG', 'nome': 'MG'}, {'sigla_uf': 'PR', 'nome': 'PR'}]...
+
+[TEST 3] GET /leaflet/produtos?uf=SP&ano=2022: HTTP 200
+  Produtos retornados: [{'produto': 'Café (em grão)', 'quantidade_total': 1250000.0}, {'produto': 'Laranja', 'quantidade_total': 980000.0}, {'produto': 'Banana', 'quantidade_total': 450000.0}]
+
+[TEST 4] GET /leaflet/municipios: HTTP 200
+  Municípios com coordenadas geográficas: [{'id_municipio': 3516200, 'municipio': 'Franca', 'latitude': -20.53, 'longitude': -47.4, 'quantidade_total': 54000.0, 'area_colhida': 12000.0, 'rendimento_medio_producao': 4500.0, 'valor_producao': 320000000.0}, {'id_municipio': 3538709, 'municipio': 'Piracicaba', 'latitude': -22.72, 'longitude': -47.64, 'quantidade_total': 31000.0, 'area_colhida': 8500.0, 'rendimento_medio_producao': 3647.0, 'valor_producao': 185000000.0}]
+
+[TEST 5] OpenAPI / Swagger Spec: HTTP 200 | Total rotas na documentação: 9
